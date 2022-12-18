@@ -1,7 +1,12 @@
 // const playerData = require('../data/playerData.json')
 // let player = "<%= player %>";
 let playerApi = 'http://localhost:3000/api/'
-let button = document.querySelector('button');
+let searchUrl = 'https://www.balldontlie.io/api/v1/players?search='
+let statsUrl = 'https://www.balldontlie.io/api/v1/stats?start_date=2022-12-13&end_date=2022-12-16&player_ids[]='
+let getInfo = document.getElementById('get-info');
+let pushPop = document.getElementById('brrr');
+
+let updatedPlayersArr;
 
 //testing adding stuff to the dom by with the json data
 //two ways to access the json data
@@ -27,35 +32,175 @@ async function doSomething() {
 
     //function to update their player info with new info
     //needs to have the player name img and number
-    try {
+    // try {
 
-        const requestOptions = {
+    //     const requestOptions = {
+    //         method: 'PUT',
+    //         headers: { 'Content-Type': 'application/json' },
+    //         body: JSON.stringify({
+    //             "name": "Trae Young",
+    //             "number": 11,
+    //             "img": "https://cdn.nba.com/headshots/nba/latest/1040x760/1629027.png",
+    //             "position": "Guard",
+    //             "height": "6' 1\"",
+    //             "weight": "180lbs",
+    //             "team": "ATLANTA HAWKS",
+    //         })
+    //     };
+
+    //     const response = await fetch(playerApi, requestOptions)
+    //     const data = await response.json()
+    //     console.log(data);
+
+
+
+    // } catch(err) {
+    //     console.log(err);
+    // }
+}
+
+//putting fetch inside an async function using try catch
+async function getJSON(url){
+    //try to fetch 
+    try {
+      const response = await fetch(url);
+      //await the response and return it
+      return await response.json();
+      //if error throw error
+    } catch (error) {
+      throw error; 
+    }
+  }
+
+async function getPlayerInfo(url) {
+    //grabbing the playerdata from the server
+    const playerDataJSON =  await getJSON(url)
+
+    //mapping over the playerdata to fetch the info for each player
+    const updatedPlayers = playerDataJSON.payload.map(async (player) => {
+        //fething the info for each player using the name key
+        const profilesJSON = await getJSON(searchUrl + player.name)
+
+        let playerSet = profilesJSON.data[0]
+        // console.log(playerSet);
+        //assigning all the new key value pairs to the updated players obj
+        player.position = playerSet.position
+        player.height = `${playerSet.height_feet}' ${playerSet.height_inches}"`
+        player.weight = playerSet.weight_pounds
+        player.team = playerSet.team.full_name
+        player.id = playerSet.id
+
+
+        //returning the correct mathcing profile for each player
+        // return profilesJSON.data[0]
+        //returning the player since thats what we want to pass in the end
+        return player
+
+    })
+    //returning all the players at once
+    return Promise.all(updatedPlayers)
+}
+
+async function getPlayerStats(playersObj) {
+
+    const playerStats = playersObj.map(async (player) => {
+        const statsJSON = await getJSON(statsUrl + player.id)
+
+        //usually return statsJSON.data which is all the games for the dates probided
+        let games = statsJSON.data
+        // console.log(games);
+        //spliceing the last item of the games arr which is the most recent game
+        let lastGame = games.splice(-1, 1)
+        lastGame = lastGame[0]
+        player.points = lastGame.pts
+        player.rebounds = lastGame.reb
+        player.assists = lastGame.ast
+        player.steals = lastGame.stl
+        player.blocks = lastGame.blk
+
+
+        //returning the most recent game for each player
+        return lastGame
+    })
+
+    return Promise.all(playerStats)
+}
+
+getInfo.addEventListener('click', async () => {
+
+    try {
+        const playerInfo = await getPlayerInfo(playerApi)
+        // console.log(updatedPlayersArr);
+
+        const playerStats = await getPlayerStats(playerInfo)
+        // console.log(playerInfo);
+        // console.log(playerStats);
+        updatedPlayersArr = playerInfo
+        console.log(playerInfo);
+    } catch (err) {
+        console.log(err);
+    }
+})
+
+
+async function pushPlayers(playersObj) {
+
+    //mapping over and submitting the put request for the players with the new info
+    const updatedPlayersInfo = playersObj.map(async (player) => {
+
+            const requestOptions = {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                "name": "Trae Young",
-                "number": 11,
-                "img": "https://cdn.nba.com/headshots/nba/latest/1040x760/1629027.png",
-                "position": "Guard",
-                "height": "6' 1\"",
-                "weight": "180lbs",
-                "team": "ATLANTA HAWKS",
+                "name": `${player.name}`,
+                "number": `${player.number}`,
+                "img": `${player.img}`,
+                "position": `${player.position}`,
+                "height": `${player.height}`,
+                "weight": `${player.weight}`,
+                "team": `${player.team}`,
+                "points": `${player.points}`,
+                "rebounds": `${player.rebounds}`,
+                "assists": `${player.assists}`,
+                "steals": `${player.steals}`,
+                "blocks": `${player.blocks}`,
             })
         };
 
         const response = await fetch(playerApi, requestOptions)
         const data = await response.json()
-        console.log(data);
+        return data
 
-
-
-    } catch(err) {
-        console.log(err);
-    }
+    })
+    //returning 
+    return Promise.all(updatedPlayersInfo)
+        
 }
 
-button.addEventListener('click', doSomething)
-// doSomething()
+pushPop.addEventListener('click', async () => {
+
+    try {
+
+        const updatePlayers = await pushPlayers(updatedPlayersArr)
+
+        let newestInfo = updatePlayers.splice(-1, 1)
+        console.log(newestInfo);
+
+
+
+    } catch (err) {
+        console.log(err);
+    }
+
+
+})
+
+
+
+
+
+
+
 
 
 //can get their stats for the last week or something
@@ -98,7 +243,7 @@ button.addEventListener('click', doSomething)
 //in order of operations
 //get data/names from server
 //get rest of data from player using name
-//get stats using player name
+//get stats using player id
 //update player data with new info using put
 //generate html from the fetch
 //fetch playerData from server to get player names
@@ -106,19 +251,11 @@ button.addEventListener('click', doSomething)
 
 //to find stats for the players last game, take all the games from last week or so then take the lst item of array should be the last game
 
-//maybe genrate html first then use put to update data that way dont have to go back and forth
 //get playerData > return player data for names
 //get player info with names > return all the player info including player id
 //get player stats with player id from prev step > return the full data, playerinfo from prev step plus new player stats
 //use fetch put first since it returns a message with payload with all the updated player data
 //finally generate html with simple function and be done with it
-
-//separate get request and save the current playerData to a var for changing
-//new chain, using the new var get the player info using the names
-//save all the player info to the new var declared
-//then using the playerid from player info get the stats for the game
-//then finally after all the info is there generate the html
-//then separate fetch for push at the end. push the object?
 
 //maybe dont have it run onload
 
@@ -126,13 +263,17 @@ button.addEventListener('click', doSomething)
 //then push button to refresh data or something maybe
 //can act like a update data button since its the last games stats
 
-//2 buttons total
+//2 BUTTONS TOTAL
 //one button to initiate the get function to get the players names from the database and start the chain to get all the other info
+//all the new data gets saved to a new object
+//that object is the new data that will be pushed/updated to the database
+
 //another button to push all of that new info to server then with the returned promise generate the html for it
+//iterate over all of them using map or something saving it to a variable then return that variable after each put request is done using return.all
+//then use that new variable which is the newest dataset to populate the html
 //throw in a loading screen maybe
 
 //i think only need one button because the push returns a promise which can be used
-
 
 
 //how the hashtag basketball one works

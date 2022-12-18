@@ -60,3 +60,16 @@
 //         "isGoat": true,
 //         "teams": ["SuperSonics", "Thunder", "Warriors", "Nets"]
 //     }
+
+/*
+{
+    "name": "Giannis Antetokounmpo",
+    "position": "Forward",
+    "height": "6' 11\"",
+    "weight": "243lbs",
+    "number": 34,
+    "team": "MILWAUKEE BUCKS",
+    "img": "https://cdn.nba.com/headshots/nba/latest/1040x760/203507.png"
+
+}
+*/

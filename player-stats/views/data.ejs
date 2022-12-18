@@ -9,8 +9,8 @@
 </head>
 <body>
     <div class="center-button">
-        <button class="button green">GET INFO</button>
-        <button class="button blue">PUSH + POPULATE</button>
+        <button class="button green" id="get-info">GET INFO</button>
+        <button class="button blue" id="brrr">GO BRRR</button>
 
     </div>
     <main>
@@ -42,11 +42,21 @@
                     <%= player.team %>
                 </p>
                 <div class="stats">
-                <p class="label">PTS</p><p class="value">30.6</p>
-                <p class="label">REB</p><p class="value">10.2</p>
-                <p class="label">AST</p><p class="value">5.5</p>
-                <p class="label">STL</p><p class="value">1.7</p>
-                <p class="label">BLK</p><p class="value">1.2</p>
+                <p class="label">PTS</p><p class="value">
+                    <%= player.points %>
+                </p>
+                <p class="label">REB</p><p class="value">
+                    <%= player.rebounds %>
+                </p>
+                <p class="label">AST</p><p class="value">
+                    <%= player.assists %>
+                </p>
+                <p class="label">STL</p><p class="value">
+                    <%= player.steals %>
+                </p>
+                <p class="label">BLK</p><p class="value">
+                    <%= player.blocks %>
+                </p>
                 </div>
             </div>
 
