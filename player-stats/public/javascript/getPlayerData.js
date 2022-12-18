@@ -1,7 +1,7 @@
 // const playerData = require('../data/playerData.json')
 // let player = "<%= player %>";
 let playerApi = 'http://localhost:3000/api/'
-
+let button = document.querySelector('button');
 
 //testing adding stuff to the dom by with the json data
 //two ways to access the json data
@@ -26,6 +26,7 @@ async function doSomething() {
     // }
 
     //function to update their player info with new info
+    //needs to have the player name img and number
     try {
 
         const requestOptions = {
@@ -53,7 +54,8 @@ async function doSomething() {
     }
 }
 
-doSomething()
+button.addEventListener('click', doSomething)
+// doSomething()
 
 
 //can get their stats for the last week or something
@@ -123,3 +125,19 @@ doSomething()
 //load up whatevr the hardcoded info is first
 //then push button to refresh data or something maybe
 //can act like a update data button since its the last games stats
+
+//2 buttons total
+//one button to initiate the get function to get the players names from the database and start the chain to get all the other info
+//another button to push all of that new info to server then with the returned promise generate the html for it
+//throw in a loading screen maybe
+
+//i think only need one button because the push returns a promise which can be used
+
+
+
+//how the hashtag basketball one works
+//to update the scoreboard from yahoo
+//uses a get request to read the current matchup score
+//then populates it all in one go
+//and shows a loading 'animation' until its done
+//similar to the astronaut one
