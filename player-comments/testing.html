@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .player-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 300px;
+  height: 450px;
+  background-color: #f2f2f2;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  margin: 20px;
+  overflow: hidden;
+}
+
+.player-card img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 20px 0;
+  border: 1px solid #333;
+
+}
+
+.player-card h1 {
+  font-size: 24px;
+  margin: 10px 0;
+  color: #333;
+
+}
+
+.player-card p {
+  font-size: 16px;
+  margin: 10px 0;
+  color: #666;
+
+}
+.player-card .size {
+  display: flex;
+  /* flex-wrap: wrap; */
+  justify-content: space-around;
+  /* margin-top: 20px; */
+  font-style: italic;
+  
+
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.player-card .size p {
+    color: #999;
+    margin-left: 10px;
+}
+.player-card .stats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.player-card .stats p {
+  font-size: 14px;
+  margin: 3px;
+  
+}
+
+.player-card .stats .label {
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #333;
+
+}
+
+.player-card .position {
+  font-style: italic;
+  color: #999;
+}
+
+.player-card .number {
+  font-size: 32px;
+  font-weight: bold;
+  color: #333;
+}
+
+.player-card .team {
+  text-transform: uppercase;
+  color: #4caf50;
+}
+.player-card .stats .value {
+  
+  color: red; 
+}
+
+    </style>
+    
+</head>
+<body>
+    <div class="player-card">
+        <img src="https://cdn.nba.com/headshots/nba/latest/1040x760/203507.png" alt="Player Name">
+        <h1>Giannis Antetokounmpo</h1>
+        <p class="position">PF, C</p>
+        <div class="size">
+            <p>Height: 6′ 11″</p>
+
+            <p>Weight: 250lbs</p>
+        </div>
+        <!-- <p class="position">250lb</p>
+        <p class="position">6′ 11″</p> -->
+
+        <p class="number">#34</p>
+        <p class="team">Milwaukee Bucks</p>
+        <div class="stats">
+          <p class="label">PTS</p><p class="value">30.6</p>
+          <p class="label">REB</p><p class="value">10.2</p>
+          <p class="label">AST</p><p class="value">5.5</p>
+          <p class="label">STL</p><p class="value">1.7</p>
+          <p class="label">BLK</p><p class="value">1.2</p>
+        </div>
+    </div>
+      
+</body>
+</html>

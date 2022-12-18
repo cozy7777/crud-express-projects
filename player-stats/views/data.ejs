@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../stylesheets/style.css">
+    <title>Document</title>
+</head>
+<body>
+    <% players.forEach((player) => { %>
+        <div class="player-card">
+            <img src='<%= player.img %>' alt="Player Name">
+            <h1>
+                <%= player.name %> 
+            </h1>
+            <p class="position">
+                <%= player.position %>
+            </p>
+            <div class="size">
+                <p>Height: 
+                    <%= player.height %>
+                </p>
+                
+                <p>Weight: 
+                    <%= player.weight %>
+                </p>
+            </div>
+            <!-- <p class="position">250lb</p>
+            <p class="position">6′ 11″</p> -->
+    
+            <p class="number">
+                #<%= player.number %>
+            </p>
+            <p class="team">
+                <%= player.team %>
+            </p>
+            <div class="stats">
+              <p class="label">PTS</p><p class="value">30.6</p>
+              <p class="label">REB</p><p class="value">10.2</p>
+              <p class="label">AST</p><p class="value">5.5</p>
+              <p class="label">STL</p><p class="value">1.7</p>
+              <p class="label">BLK</p><p class="value">1.2</p>
+            </div>
+        </div>
+
+
+    <% }) %>
+    
+
+<script src="../javascript/getPlayerData.js"></script>
+</body>
+</html>
