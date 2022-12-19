@@ -3,8 +3,9 @@
 let playerApi = 'http://localhost:3000/api/'
 let searchUrl = 'https://www.balldontlie.io/api/v1/players?search='
 let statsUrl = 'https://www.balldontlie.io/api/v1/stats?start_date=2022-12-13&end_date=2022-12-16&player_ids[]='
-let getInfo = document.getElementById('get-info');
-let pushPop = document.getElementById('brrr');
+// let getInfo = document.getElementById('get-info');
+//function to do everything all in one
+let goBrrr = document.getElementById('brrr');
 
 //grabbing all the dom elemets to update with the new stats
 let playerPosition = document.getElementsByClassName('position')
@@ -141,7 +142,7 @@ async function getPlayerStats(playersObj) {
     return Promise.all(playerStats)
 }
 //function to get all the players stats and save it to the updatedplayer object to push later
-getInfo.addEventListener('click', async () => {
+goBrrr.addEventListener('click', async () => {
     try {
         //first fetch to get the local data for the names
         const playerInfo = await getPlayerInfo(playerApi)
@@ -153,6 +154,17 @@ getInfo.addEventListener('click', async () => {
         // console.log(playerStats);
         updatedPlayersArr = playerInfo
         console.log(playerInfo);
+
+
+
+        //updating the players and returning all the server responses
+        const updatePlayers = await pushPlayers(updatedPlayersArr)
+        //only need the last response since it returns all the data
+        let newestInfo = updatePlayers.splice(-1, 1)
+        newestInfo = newestInfo[0].payload
+        console.log(newestInfo);
+        //function to generate the html for the new data
+        generateHTML(newestInfo)
     } catch (err) {
         console.log(err);
     }
@@ -209,39 +221,48 @@ function generateHTML(playerInfo) {
     // })
 
     for(let i = 0; i < playerInfo.length; i++) {
-        playerPosition[i].textContent = playerInfo[i].position;
-        playerHeight[i].textContent = playerInfo[i].height;
-        playerWeight[i].textContent = playerInfo[i].weight;
-        playerTeam[i].textContent = playerInfo[i].team;
-        playerPoints[i].textContent = playerInfo[i].points;
-        playerRebounds[i].textContent = playerInfo[i].rebounds;
-        playerAssists[i].textContent = playerInfo[i].assists;;
-        playerSteals[i].textContent = playerInfo[i].steals;;
-        playerBlocks[i].textContent = playerInfo[i].blocks;
+        let currentPlayer = playerInfo[i];
+
+        if(currentPlayer.position == 'F') {
+            playerPosition[i].textContent = 'Forward'
+        } else if (currentPlayer.position == 'G'){
+            playerPosition[i].textContent = 'Guard'
+        } else if (currentPlayer.position == 'C'){
+            playerPosition[i].textContent = 'Center'
+        }
+        // playerPosition[i].textContent = currentPlayer.position;
+        playerHeight[i].textContent = 'Height: ' + currentPlayer.height;
+        playerWeight[i].textContent = 'Weight: ' + currentPlayer.weight + 'lbs';
+        playerTeam[i].textContent = currentPlayer.team;
+        playerPoints[i].textContent = currentPlayer.points;
+        playerRebounds[i].textContent = currentPlayer.rebounds;
+        playerAssists[i].textContent = currentPlayer.assists;;
+        playerSteals[i].textContent = currentPlayer.steals;;
+        playerBlocks[i].textContent = currentPlayer.blocks;
     }
 }
 
 //fucntion to push the updated players to server
-pushPop.addEventListener('click', async () => {
-    console.log(playerPosition);
+// pushPop.addEventListener('click', async () => {
+//     console.log(playerPosition);
 
-    try {
-        //updating the players and returning all the server responses
-        const updatePlayers = await pushPlayers(updatedPlayersArr)
-        //only need the last response since it returns all the data
-        let newestInfo = updatePlayers.splice(-1, 1)
-        newestInfo = newestInfo[0].payload
-        console.log(newestInfo);
-        //function to generate the html for the new data
-        generateHTML(newestInfo)
-
-
-    } catch (err) {
-        console.log(err);
-    }
+//     try {
+//         //updating the players and returning all the server responses
+//         const updatePlayers = await pushPlayers(updatedPlayersArr)
+//         //only need the last response since it returns all the data
+//         let newestInfo = updatePlayers.splice(-1, 1)
+//         newestInfo = newestInfo[0].payload
+//         console.log(newestInfo);
+//         //function to generate the html for the new data
+//         generateHTML(newestInfo)
 
 
-})
+//     } catch (err) {
+//         console.log(err);
+//     }
+
+
+// })
 
 
 
