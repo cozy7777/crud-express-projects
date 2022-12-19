@@ -17,18 +17,18 @@
         <% players.forEach((player) => { %>
             <div class="player-card">
                 <img src='<%= player.img %>' alt="Player Name">
-                <h1>
+                <h1 class="name">
                     <%= player.name %> 
                 </h1>
-                <p class="position">
+                <p class="position" >
                     <%= player.position %>
                 </p>
                 <div class="size">
-                    <p>Height: 
+                    <p class="height">Height: 
                         <%= player.height %>
                     </p>
                     
-                    <p>Weight: 
+                    <p class="weight">Weight: 
                         <%= player.weight %>
                     </p>
                 </div>
@@ -38,23 +38,23 @@
                 <p class="number">
                     #<%= player.number %>
                 </p>
-                <p class="team">
+                <p class="team" >
                     <%= player.team %>
                 </p>
                 <div class="stats">
-                <p class="label">PTS</p><p class="value">
+                <p class="label">PTS</p><p class="value points" >
                     <%= player.points %>
                 </p>
-                <p class="label">REB</p><p class="value">
+                <p class="label">REB</p><p class="value rebounds" >
                     <%= player.rebounds %>
                 </p>
-                <p class="label">AST</p><p class="value">
+                <p class="label">AST</p><p class="value assists" >
                     <%= player.assists %>
                 </p>
-                <p class="label">STL</p><p class="value">
+                <p class="label">STL</p><p class="value steals" >
                     <%= player.steals %>
                 </p>
-                <p class="label">BLK</p><p class="value">
+                <p class="label">BLK</p><p class="value blocks" >
                     <%= player.blocks %>
                 </p>
                 </div>

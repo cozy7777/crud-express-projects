@@ -3,6 +3,8 @@ const wikiUrl = 'https://en.wikipedia.org/api/rest_v1/page/summary/';
 const peopleList = document.getElementById('people');
 const btn = document.querySelector('button');
 
+
+
 // Handle all fetch requests
 
 //putting fetch inside an async function using try catch
